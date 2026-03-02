@@ -1,15 +1,27 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "vdev-bot",
-  "compatibility_date": "2025-09-27",
-  "compatibility_flags": ["nodejs_compat"],
-  "observability": {
-    "enabled": true
-  },
-  "routes": [
-    {
-      "pattern": "vdev.bot",
-      "custom_domain": true
-    }
-  ]
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "vdevbot",
+	"compatibility_date": "2026-03-01",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"services": [
+		{
+			// Self-reference service binding, the service name must match the worker name
+			// see https://opennext.js.org/cloudflare/caching
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "vdevbot"
+		}
+	],
+	"images": {
+		// Enable image optimization
+		// see https://opennext.js.org/cloudflare/howtos/image
+		"binding": "IMAGES"
+	}
 }
